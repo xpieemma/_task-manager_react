@@ -1,3 +1,4 @@
+import { useState } from "react";
 import type { TaskFilterProps, TaskStatus} from "../../types"
 // import type { IFilterProp } from "../TaskList/TaskList"
 
@@ -40,8 +41,11 @@ const onFilterChange = () => {
 
 
 const setFilter: React.FC = () => {
-    const [selectedStatus, setSelectedValue] = useState<string>('Pending'); // Default value
-    const [selectedPriority, setSelectedValue] = useState<string>('Low'); // Default value
+    // const [selectedStatus, setSelectedValue] = useState<string>('Pending'); // Default value
+    // const [selectedPriority, setSelectedValue] = useState<string>('Low'); // Default value
+
+    const [selectedStatus, setSelectedValue] = useState<TaskStatus>(undefined); // Default value
+    const [selectedPriority, setSelectedValue] = useState<"low"| "medium"|"high">(undefined); // Default value
 
     const handleFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         let property = event.target.value;
