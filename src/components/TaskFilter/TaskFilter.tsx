@@ -1,5 +1,5 @@
 import type { TaskFilterProps, TaskStatus} from "../../types"
-import type { IFilterProp } from "../TaskList/TaskList"
+// import type { IFilterProp } from "../TaskList/TaskList"
 
 // export interface TaskFilterProps {
 //   onFilterChange: (filters: {
@@ -12,7 +12,7 @@ export function TaskFilter ({onFilterChange: {filters: IFilterProp}}:TaskFilterP
 
 // {onFilterChange: {status?: , priority?: }:TaskFilterProps}
 
-onFilterChange() {
+const onFilterChange = () => {
 
 }
     const completedTasks: Task[] = tasks.filter(task => task.status === "completed");
