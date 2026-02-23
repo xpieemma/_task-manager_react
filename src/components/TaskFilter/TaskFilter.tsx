@@ -1,140 +1,51 @@
 import { useState } from "react";
-import type { TaskFilterProps, TaskStatus} from "../../types"
-// import type { IFilterProp } from "../TaskList/TaskList"
+import type { TaskFilterProps, TaskStatus } from "../../types";
 
-// export interface TaskFilterProps {
-//   onFilterChange: (filters: {
-//     status?: TaskStatus;
-//     priority?: 'low' | 'medium' | 'high';
-//   }) => void;
-// }
+// Define a local type for priority to keep the code clean
+type Priority = 'low' | 'medium' | 'high';
 
-export function TaskFilter ({onFilterChange: {filters: IFilterProp}}:TaskFilterProps) {
+export function TaskFilter({ onFilterChange }: TaskFilterProps) {
+  const [filters, setFilters] = useState<{
+    status: TaskStatus | undefined;
+    priority: Priority | undefined;
+  }>({
+    status: undefined,
+    priority: undefined
+  });
 
-// {onFilterChange: {status?: , priority?: }:TaskFilterProps}
-
-const onFilterChange = () => {
-
-}
-    const completedTasks: Task[] = tasks.filter(task => task.status === "completed");
-    const inProgressTasks: Task[] = tasks.filter(task => task.status === "in-progress");
-    const pendingTasks: Task[] = tasks.filter(task => task.status === "pending");
-    const lowTasks: Task[] = tasks.filter(task => task.priority === "low");
-    const mediumTasks: Task[] = tasks.filter(task => task.priority === "medium");
-    const highTasks: Task[] = tasks.filter(task => task.priority === "high");
-
-    switch (filt) {  
-        case filt = "Completed":
-            return completedTasks;
-        case filt = "In-Progress":
-            return inProgressTasks;
-        case filt = "Pending":
-            return pendingTasks;
-        case filt = "Low":
-            return lowTasks;
-        case filt = "Medium":
-            return mediumTasks;
-        case filt = "High":
-            return highTasks;
-    };
-
-
-
-const setFilter: React.FC = () => {
-    // const [selectedStatus, setSelectedValue] = useState<string>('Pending'); // Default value
-    // const [selectedPriority, setSelectedValue] = useState<string>('Low'); // Default value
-
-    const [selectedStatus, setSelectedValue] = useState<TaskStatus>(undefined); // Default value
-    const [selectedPriority, setSelectedValue] = useState<"low"| "medium"|"high">(undefined); // Default value
-
-    const handleFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        let property = event.target.value;
-        setSelectedValue({...prevProperty, [property]);
-    };
- 
-  return (
-    <TaskList (newArray)>
-    </TaskList>
-  );
-};
-}
-
-
-// export function TaskFilter ({onFilterChange}:TaskFilterProps) {
+  const handleStatusChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    // Cast the string value to our TaskStatus union or undefined
+    const val = e.target.value === "all" ? undefined : (e.target.value as TaskStatus);
     
-//     const handleStatusOption = (e) => {
-//         onFilterChange({status: e.target.value});
-//     }
-//     const handlePriorityOption = (e) => {
-//         onFilterChange({priority: e.target.value});
-//     }
-//         return (
-//             <div>
-//                 <TaskList tasks={onFilterChange}></TaskList>
-//             </div>
-//             ) 
-// };
+    const newFilters = { ...filters, status: val };
+    setFilters(newFilters);
+    onFilterChange(newFilters);
+  };
 
-// export function TaskFilter ({onFilterChange}:TaskFilterProps) {
-      
-// };
+  const handlePriorityChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    // Cast the string value to our Priority union or undefined
+    const val = e.target.value === "all" ? undefined : (e.target.value as Priority);
+    
+    const newFilters = { ...filters, priority: val };
+    setFilters(newFilters);
+    onFilterChange(newFilters);
+  };
 
+  return (
+    <div className="filter-container">
+      <select value={filters.status ?? "all"} onChange={handleStatusChange}>
+        <option value="all">All Statuses</option>
+        <option value="pending">Pending</option>
+        <option value="in-progress">In Progress</option>
+        <option value="completed">Completed</option>
+      </select>
 
-// used from documentation: https://react.dev/learn/rendering-lists
-// const chemists = people.filter(person =>
-//   person.profession === 'chemist'
-
-//   const listItems = chemists.map(person =>
-//   <li>
-//      <img
-//        src={getImageUrl(person)}
-//        alt={person.name}
-//      />
-//      <p>
-//        <b>{person.name}:</b>
-//        {' ' + person.profession + ' '}
-//        known for {person.accomplishment}
-//      </p>
-//   </li>
-// );
-// return <ul>{listItems}</ul>;
-
-// );
-
-
-
-// export function TaskFilter ({onFilterChange: {status?: , priority?: }:TaskFilterProps}) {
-// // let newList: Task[] = onFilterChange;
-// //     const taskRender = {onFilterChange}.map((task) => {
-// //     return (
-// //         <TaskItem task={task}/>
-// //     )
-// // })
-// onFilterChange
-// return (
-//     <>
-//     <TaskList {onFilterChange}/>
-//     </>
-// )
-// }
-
-// export interface TaskFilterProps {
-//   onFilterChange: (filters: {
-//     status?: TaskStatus;
-//     priority?: 'low' | 'medium' | 'high';
-//   }) => void;
-// }
-
-
-// const dataArray = [item1, item2, item3];
- 
-// const jsxElements = dataArray.map((itemData) => {
-//   // For each item in dataArray, return a JSX element
-//   return <MyComponent data={itemData} />;
-// });
- 
-// // Now, jsxElements is an array like:
-// // [<MyComponent data={item1} />, <MyComponent data={item2} />, <MyComponent data={item3} />]
- 
-// // You can render this array directly inside JSX:
-// return <ul>{jsxElements}</ul>;
+      <select value={filters.priority ?? "all"} onChange={handlePriorityChange}>
+        <option value="all">All Priorities</option>
+        <option value="low">Low</option>
+        <option value="medium">Medium</option>
+        <option value="high">High</option>
+      </select>
+    </div>
+  );
+}
